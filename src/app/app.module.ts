@@ -1,35 +1,35 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { SthlmTravelApp } from './app.component';
 
-
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Geolocation } from '@ionic-native/geolocation';
+import { IonicStorageModule } from '@ionic/storage';
+import { ApiProvider } from '../providers/api/api';
 
 @NgModule({
   declarations: [
     SthlmTravelApp,
-    HomePage,
-    TabsPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(SthlmTravelApp)
+    HttpModule,
+    IonicModule.forRoot(SthlmTravelApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     SthlmTravelApp,
-    HomePage,
-    TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    Geolocation,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ApiProvider
   ]
 })
 export class AppModule {}
