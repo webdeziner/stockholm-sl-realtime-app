@@ -18,4 +18,7 @@
       <ion-note item-end>{{item.dist}} m</ion-note>
     </ion-item>
   </ion-list>
+  <div *ngIf="!nearbyLocations">
+    No locations found or API key doesn't exists
+  </div>
 </ion-content>

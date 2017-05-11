@@ -1,11 +1,56 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>details</ion-title>
+    <ion-title>{{item.name}}</ion-title>
   </ion-navbar>
-
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="selectedType">
+      <ion-segment-button value="buses">
+        Buses
+      </ion-segment-button>
+      <ion-segment-button value="trains">
+        Trains
+      </ion-segment-button>
+      <ion-segment-button value="metros">
+        Metro
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <div *ngIf="error">
+    No departures found or no API key
+  </div>
+  <div [ngSwitch]="selectedType" *ngIf="!error">
+
+    <ion-list *ngSwitchCase="'buses'">
+      <ion-item *ngFor="let item of departures.buses">
+        {{item.LineNumber}} {{item.Destination}}
+        <ion-note item-end>
+          {{item.DisplayTime}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'trains'">
+      <ion-item *ngFor="let item of departures.trains">
+        {{item.LineNumber}} {{item.Destination}}
+        <ion-note item-end>
+          {{item.DisplayTime}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'metros'">
+      <ion-item *ngFor="let item of departures.metros">
+        {{item.LineNumber}} {{item.Destination}}
+        <ion-note item-end>
+          {{item.DisplayTime}}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+  </div>
 
 </ion-content>

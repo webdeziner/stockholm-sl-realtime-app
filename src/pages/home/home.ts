@@ -14,13 +14,14 @@ export class HomePage {
   public nearbyLocations: any;
   public loader: any;
   constructor(public navCtrl: NavController, public geo: Geolocation, public api: ApiProvider, public loadingCtrl: LoadingController) {
+
+  }
+
+  ionViewDidEnter() {
     this.loader = this.loadingCtrl.create({
       content: "Please wait...",
     });
     this.loader.present();
-  }
-
-  ionViewDidEnter() {
     this.geo.getCurrentPosition().then((response) => {
       this.latitude = response.coords.latitude;
       this.longitude = response.coords.longitude;
@@ -29,6 +30,7 @@ export class HomePage {
         this.nearbyLocations = response;
       }).catch((error) => {
         console.log("home.ts 31: ",error);
+        this.loader.dismiss();
       });
     });
   }

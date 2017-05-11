@@ -13,7 +13,7 @@ export class ApiProvider {
   public buses:any;
   public trains:any;
   public metros:any;
-  
+
   constructor(public http: Http, public storage: Storage) {
     console.log('Hello Api Provider');
     this.getAllKeys();
@@ -65,18 +65,17 @@ export class ApiProvider {
     return new Promise((resolve, reject) => {
       if(this.nearby_api == null) {
         reject('No Api key');
+      } else {
+        let url = this.url+'nearbystops.json?key=' + this.nearby_api;
+        url += '&originCoordLat='+latitude+'&originCoordLong='+longitude;
+        url += '&maxresults='+maxResult+'&radius='+radius;
+
+        this.http.get(url).map(res => res.json()).subscribe(data => {
+          resolve(data.LocationList.StopLocation);
+        },(error) => {
+          reject(error);
+       });
       }
-
-      let url = this.url+'nearbystops.json?key=' + this.nearby_api;
-      url += '&originCoordLat='+latitude+'&originCoordLong='+longitude;
-      url += '&maxresults='+maxResult+'&radius='+radius;
-
-      this.http.get(url).map(res => res.json()).subscribe(data => {
-        resolve(data.LocationList.StopLocation);
-      },(error) => {
-        reject(error);
-     });
-
 
     });
 
@@ -86,16 +85,16 @@ export class ApiProvider {
     return new Promise((resolve, reject) => {
       if(this.locations_api == null) {
         reject('No API key');
+      } else {
+        let url = this.url + 'typeahead.json?key='+this.locations_api;
+        url += '&searchstring='+id;
+        url += '&stationsonly=true&maxresults=20';
+        this.http.get(url).map(res => res.json()).subscribe(data => {
+          resolve(data.ResponseData);
+        },(error) => {
+          reject(error);
+        });
       }
-
-      let url = this.url + 'typeahead.json?key='+this.locations_api;
-      url += '&searchstring='+id;
-      url += '&stationsonly=true&maxresults=20';
-      this.http.get(url).map(res => res.json()).subscribe(data => {
-        resolve(data.ResponseData);
-      },(error) => {
-        reject(error);
-      })
 
     });
   }
@@ -104,19 +103,19 @@ export class ApiProvider {
     return new Promise((resolve, reject) => {
       if(this.realtime_api == null) {
         reject('No API key');
+      } else {
+        let url = this.url + 'realtimedeparturesV4.json?key='+this.realtime_api;
+        url += '&siteid='+id;
+        url += '&timewindow=60&tram=false&ship=false';
+        this.http.get(url).map(res => res.json()).subscribe(data => {
+          this.buses = data.ResponseData.Buses;
+          this.trains = data.ResponseData.Trains;
+          this.metros = data.ResponseData.Metros;
+          resolve();
+        },(error) => {
+          reject(error);
+        });
       }
-
-      let url = this.url + 'realtimedeparturesV4.json?key='+this.realtime_api;
-      url += '&siteid='+id;
-      url += '&timewindow=60&tram=false&ship=false';
-      this.http.get(url).map(res => res.json()).subscribe(data => {
-        this.buses = data.ResponseData.Buses;
-        this.trains = data.ResponseData.Trains;
-        this.metros = data.ResponseData.Metros;
-        resolve();
-      },(error) => {
-        reject(error);
-      })
 
     });
   }
