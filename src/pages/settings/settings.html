@@ -1,11 +1,29 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>settings</ion-title>
+    <ion-title>Settings</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content padding>
+  <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Nearby API key</ion-label>
+        <ion-textarea formControlName="nearbyKey"></ion-textarea>
+      </ion-item>
 
+      <ion-item>
+        <ion-label stacked>Locations API key</ion-label>
+        <ion-textarea formControlName="locationsKey"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Realtime API key</ion-label>
+        <ion-textarea formControlName="realtimeKey"></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <div padding>
+      <button ion-button block type="submit" color="primary">Save</button>
+    </div>
+  </form>
 </ion-content>
